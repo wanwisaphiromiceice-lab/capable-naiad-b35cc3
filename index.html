@@ -14,148 +14,212 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #fff8f2;
-      color: #30221e;
+      background: #fff7ed;
+      color: #292524;
     }
 
     header {
-      background: #a93123;
+      background: linear-gradient(135deg, #991b1b, #ef4444);
       color: white;
+      padding: 30px 15px;
       text-align: center;
-      padding: 28px 15px;
     }
 
     header h1 {
       margin: 0;
-      font-size: 28px;
+      font-size: 32px;
     }
 
     header p {
       margin-bottom: 0;
+      font-size: 16px;
     }
 
     .container {
-      max-width: 650px;
+      max-width: 850px;
       margin: auto;
       padding: 15px;
     }
 
-    .box {
-      background: white;
-      padding: 20px;
+    .notice {
+      background: #fef3c7;
+      border: 2px solid #f59e0b;
       border-radius: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+      padding: 15px;
+      margin: 20px 0;
+      text-align: center;
+      font-weight: bold;
     }
 
-    h2 {
-      margin-top: 0;
-      color: #a93123;
+    .category {
+      margin-top: 25px;
+    }
+
+    .category h2 {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 12px;
+      border-radius: 12px;
       font-size: 21px;
     }
 
-    .item {
+    .product {
+      background: white;
+      border-radius: 14px;
+      padding: 15px;
+      margin: 10px 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 10px;
-      padding: 15px 0;
-      border-bottom: 1px solid #eee;
+      box-shadow: 0 2px 8px #00000010;
     }
 
-    .item:last-child {
-      border-bottom: none;
+    .product-info {
+      flex: 1;
     }
 
-    .item-name {
+    .product-name {
       font-weight: bold;
+      font-size: 16px;
     }
 
-    .price {
-      color: #a93123;
+    .product-price {
+      color: #dc2626;
       margin-top: 5px;
     }
 
     .quantity {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .quantity button {
-      background: #f2d5c8;
+      width: 35px;
+      height: 35px;
       border: none;
-      width: 36px;
-      height: 36px;
-      border-radius: 9px;
+      border-radius: 10px;
+      background: #dc2626;
+      color: white;
       font-size: 22px;
       cursor: pointer;
     }
 
     .quantity span {
-      min-width: 18px;
+      min-width: 20px;
       text-align: center;
+      font-weight: bold;
+    }
+
+    .cart {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      margin-top: 25px;
+      box-shadow: 0 3px 12px #00000015;
+    }
+
+    .cart h2 {
+      margin-top: 0;
+      color: #991b1b;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .total {
+      font-size: 25px;
+      font-weight: bold;
+      color: #dc2626;
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    .minimum {
+      color: #b45309;
+      text-align: right;
+      margin-top: 8px;
+    }
+
+    .form-section {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      margin-top: 25px;
+    }
+
+    .form-section h2 {
+      color: #991b1b;
     }
 
     label {
       display: block;
       margin-top: 15px;
-      margin-bottom: 7px;
       font-weight: bold;
     }
 
-    input,
-    select,
-    textarea {
+    input, textarea, select {
       width: 100%;
       padding: 12px;
+      margin-top: 7px;
       border: 1px solid #ddd;
-      border-radius: 9px;
+      border-radius: 10px;
       font-size: 16px;
+      font-family: inherit;
     }
 
     textarea {
-      height: 90px;
-      resize: vertical;
+      min-height: 80px;
     }
 
-    .total {
-      text-align: right;
-      color: #a93123;
-      font-size: 26px;
-      font-weight: bold;
-      margin-top: 15px;
-    }
-
-    .submit {
-      background: #a93123;
+    .submit-btn {
+      width: 100%;
+      padding: 17px;
+      margin-top: 25px;
+      background: #16a34a;
       color: white;
       border: none;
-      width: 100%;
-      padding: 18px;
       border-radius: 12px;
-      margin-top: 20px;
       font-size: 19px;
       font-weight: bold;
       cursor: pointer;
     }
 
-    .submit:disabled {
-      opacity: 0.5;
+    .submit-btn:disabled {
+      background: #9ca3af;
       cursor: not-allowed;
     }
 
-    #message {
+    .message {
       margin-top: 15px;
+      text-align: center;
       font-weight: bold;
-      white-space: pre-wrap;
-      line-height: 1.6;
+      white-space: pre-line;
     }
 
-    .note {
-      color: #777;
-      font-size: 12px;
-      margin-top: 12px;
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #78716c;
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 26px;
+      }
+
+      .product-name {
+        font-size: 14px;
+      }
+
+      .quantity {
+        gap: 6px;
+      }
     }
   </style>
 </head>
@@ -163,244 +227,398 @@
 <body>
 
 <header>
-  <h1>🌶️ หม่าล่าสามสหาย</h1>
-  <p>เลือกไม้ • เลือกความเผ็ด • ส่งออเดอร์เข้าร้าน</p>
+  <h1>🌶️ หม่าล่าสามสหาย 🍢</h1>
+  <p>หม่าล่าแซ่บ ๆ และน้ำปั่นเย็นชื่นใจ 🥤</p>
 </header>
 
 <div class="container">
 
-  <div class="box">
-    <h2>🍢 เลือกเมนูหม่าล่า</h2>
-    <div id="menu"></div>
-    <p class="note">
-      รายการและราคาเป็นข้อมูลตัวอย่าง กรุณาตรวจสอบก่อนเปิดขายจริง
-    </p>
+  <div class="notice">
+    🛒 สั่งซื้อขั้นต่ำ 100 บาทต่อออเดอร์
+    <br>
+    🍢 หม่าล่าไม้ละ 10 บาท
+    <br>
+    🥤 น้ำปั่นแก้วละ 30 บาท
   </div>
 
-  <div class="box">
-    <h2>🛒 สรุปคำสั่งซื้อ</h2>
-    <div id="summary">ยังไม่ได้เลือกสินค้า</div>
-    <div class="total" id="total">รวม 0 บาท</div>
-  </div>
+  <section class="category">
+    <h2>🍢 เมนูหม่าล่า</h2>
+    <div id="mala-menu"></div>
+  </section>
 
-  <form id="orderForm" class="box">
+  <section class="category">
+    <h2>🥤 เมนูน้ำปั่น</h2>
+    <div id="drink-menu"></div>
+  </section>
+
+  <section class="cart">
+    <h2>🛒 ตะกร้าสินค้า</h2>
+
+    <div id="cart-items">
+      ยังไม่ได้เลือกสินค้า
+    </div>
+
+    <div class="total" id="total-price">
+      ยอดรวม 0 บาท
+    </div>
+
+    <div class="minimum" id="minimum-message">
+      กรุณาเลือกสินค้าให้ครบ 100 บาท
+    </div>
+  </section>
+
+  <section class="form-section">
 
     <h2>📝 ข้อมูลลูกค้า</h2>
 
-    <label for="customer">ชื่อลูกค้า *</label>
-    <input
-      type="text"
-      id="customer"
-      maxlength="80"
-      required
-      placeholder="กรอกชื่อลูกค้า"
-    >
+    <form id="order-form">
 
-    <label for="phone">เบอร์โทรศัพท์</label>
-    <input
-      type="tel"
-      id="phone"
-      maxlength="20"
-      placeholder="08xxxxxxxx"
-    >
+      <label for="customer-name">ชื่อลูกค้า *</label>
+      <input
+        type="text"
+        id="customer-name"
+        placeholder="กรอกชื่อของคุณ"
+        required
+      >
 
-    <label for="spicy">🌶️ ระดับความเผ็ด</label>
-    <select id="spicy">
-      <option value="ไม่เผ็ด">ไม่เผ็ด</option>
-      <option value="เผ็ดน้อย">เผ็ดน้อย</option>
-      <option value="เผ็ดกลาง" selected>เผ็ดกลาง</option>
-      <option value="เผ็ดมาก">เผ็ดมาก</option>
-    </select>
+      <label for="customer-phone">เบอร์โทรศัพท์ *</label>
+      <input
+        type="tel"
+        id="customer-phone"
+        placeholder="08xxxxxxxx"
+        required
+      >
 
-    <label for="note">ที่อยู่ในการจัดส่ง</label>
-    <textarea
-      id="note"
-      maxlength="300"
-      placeholder="เช่น ชื่อหมู่บ้าน/บ้านเลขที่/ซอย"
-    ></textarea>
+      <label for="order-type">วิธีรับสินค้า *</label>
+      <select id="order-type" required>
+        <option value="">-- เลือกวิธีรับสินค้า --</option>
+        <option value="รับที่ร้าน">รับที่ร้าน</option>
+        <option value="จัดส่ง">จัดส่ง</option>
+      </select>
 
-    <button
-      type="submit"
-      class="submit"
-      id="submitBtn"
-    >
-      📩 ส่งคำสั่งซื้อเข้าร้าน
-    </button>
+      <label for="customer-address">ที่อยู่จัดส่ง (กรณีเลือกจัดส่ง)</label>
+      <textarea
+        id="customer-address"
+        placeholder="กรอกที่อยู่จัดส่ง"
+      ></textarea>
 
-    <div id="message" role="status" aria-live="polite"></div>
+      <label for="customer-note">หมายเหตุเพิ่มเติม</label>
+      <textarea
+        id="customer-note"
+        placeholder="เช่น ไม่เผ็ด / เผ็ดน้อย / หวานน้อย"
+      ></textarea>
 
-  </form>
+      <button
+        type="submit"
+        class="submit-btn"
+        id="submit-btn"
+      >
+        📲 ยืนยันคำสั่งซื้อ
+      </button>
+
+      <div class="message" id="order-message"></div>
+
+    </form>
+
+  </section>
 
 </div>
 
+<footer>
+  ❤️ ขอบคุณที่อุดหนุนร้านหม่าล่าสามสหาย ❤️
+</footer>
+
 <script>
 
-  // ==========================
-  // รายการสินค้า
-  // ==========================
+  // ==================================
+  // 1. รายการสินค้าทั้งหมด
+  // ==================================
 
   const products = [
-    { id: "pork", name: "หมู", price: 10 },
-    { id: "chicken", name: "ไก่", price: 10 },
-    { id: "meatball", name: "ปลาดอลี่", price: 10 },
-    { id: "sausage", name: "ไส้กรอกชีส", price: 10 },
-    { id: "mushroom", name: "ไส้กรอกแดงแหลมทอง", price: 10 },
-    { id: "mushroom", name: "เต้าหู้ปลาสี่เหลี่ยม", price: 10 },
-    { id: "mushroom", name: "หมูยอ", price: 10 },
-    { id: "mushroom", name: "โบโลน่า", price: 10 },
-  { id: "mushroom", name: "ปูอัด", price: 10 }
-    { id: "crab", name: "ไส้กรอกหนังกรอบ", price: 10 },
-  { id: "mushroom", name: "หมึกหลอด", price: 10 }
+
+    // 🍢 หม่าล่า
+    { id: "pork", name: "หมู", price: 10, category: "mala" },
+    { id: "chicken", name: "ไก่", price: 10, category: "mala" },
+    { id: "dory", name: "ปลาดอลี่", price: 10, category: "mala" },
+    { id: "cheese_sausage", name: "ไส้กรอกชีส", price: 10, category: "mala" },
+    { id: "red_sausage", name: "ไส้กรอกแดงแหลมทอง", price: 10, category: "mala" },
+    { id: "fish_tofu", name: "เต้าหู้ปลาสี่เหลี่ยม", price: 10, category: "mala" },
+    { id: "pork_yor", name: "หมูยอ", price: 10, category: "mala" },
+    { id: "bologna", name: "โบโลน่า", price: 10, category: "mala" },
+    { id: "crab", name: "ปูอัด", price: 10, category: "mala" },
+    { id: "crispy_sausage", name: "ไส้กรอกหนังกรอบ", price: 10, category: "mala" },
+    { id: "squid", name: "หมึกหลอด", price: 10, category: "mala" },
+
+    // 🥤 น้ำปั่น
+    { id: "kiwi", name: "กีวี่ปั่น", price: 30, category: "drink" },
+    { id: "strawberry", name: "สตรอว์เบอร์รีปั่น", price: 30, category: "drink" },
+    { id: "pineapple", name: "สับปะรดปั่น", price: 30, category: "drink" },
+    { id: "orange", name: "ส้มปั่น", price: 30, category: "drink" },
+    { id: "watermelon", name: "แตงโมปั่น", price: 30, category: "drink" },
+    { id: "passionfruit", name: "เสาวรสปั่น", price: 30, category: "drink" },
+    { id: "milo", name: "ไมโลปั่น", price: 30, category: "drink" },
+    { id: "m150", name: "M-150 ปั่น", price: 30, category: "drink" },
+    { id: "loveza", name: "เลิฟซ่าปั่น", price: 30, category: "drink" }
+
   ];
+
+
+  // ==================================
+  // 2. ตะกร้าสินค้า
+  // ==================================
 
   const cart = {};
 
-  products.forEach(product => {
-    cart[product.id] = 0;
-  });
+  const MINIMUM_ORDER = 100;
 
-  const menu = document.getElementById("menu");
 
-  // ==========================
-  // แสดงรายการสินค้า
-  // ==========================
+  // ==================================
+  // 3. แสดงรายการสินค้า
+  // ==================================
 
-  function displayMenu() {
+  function renderProducts() {
 
-    menu.innerHTML = "";
+    const malaMenu = document.getElementById("mala-menu");
+    const drinkMenu = document.getElementById("drink-menu");
+
+    malaMenu.innerHTML = "";
+    drinkMenu.innerHTML = "";
 
     products.forEach(product => {
 
-      const row = document.createElement("div");
-      row.className = "item";
+      const div = document.createElement("div");
+      div.className = "product";
 
-      row.innerHTML = `
-        <div>
-          <div class="item-name">${product.name}</div>
-          <div class="price">${product.price} บาท/ไม้</div>
-        </div>
+      const info = document.createElement("div");
+      info.className = "product-info";
 
-        <div class="quantity">
-          <button type="button" class="minus">−</button>
-          <span class="count">${cart[product.id]}</span>
-          <button type="button" class="plus">+</button>
-        </div>
-      `;
+      const name = document.createElement("div");
+      name.className = "product-name";
+      name.textContent = product.name;
 
-      row.querySelector(".minus").addEventListener("click", () => {
-        changeQuantity(product.id, -1);
-      });
+      const price = document.createElement("div");
+      price.className = "product-price";
+      price.textContent = product.price + " บาท";
 
-      row.querySelector(".plus").addEventListener("click", () => {
-        changeQuantity(product.id, 1);
-      });
+      info.append(name, price);
 
-      menu.appendChild(row);
+      const quantity = document.createElement("div");
+      quantity.className = "quantity";
+
+      const minus = document.createElement("button");
+      minus.type = "button";
+      minus.textContent = "−";
+      minus.onclick = () => changeQuantity(product.id, -1);
+
+      const number = document.createElement("span");
+      number.id = "qty-" + product.id;
+      number.textContent = cart[product.id] || 0;
+
+      const plus = document.createElement("button");
+      plus.type = "button";
+      plus.textContent = "+";
+      plus.onclick = () => changeQuantity(product.id, 1);
+
+      quantity.append(minus, number, plus);
+
+      div.append(info, quantity);
+
+      if (product.category === "mala") {
+        malaMenu.appendChild(div);
+      } else {
+        drinkMenu.appendChild(div);
+      }
 
     });
 
   }
 
-  // ==========================
-  // เพิ่มลดจำนวนสินค้า
-  // ==========================
+
+  // ==================================
+  // 4. เพิ่มและลดจำนวน
+  // ==================================
 
   function changeQuantity(id, amount) {
 
-    cart[id] = Math.max(
-      0,
-      Math.min(99, cart[id] + amount)
-    );
+    const current = cart[id] || 0;
 
-    displayMenu();
-    updateSummary();
+    cart[id] = Math.max(0, current + amount);
+
+    document.getElementById("qty-" + id).textContent = cart[id];
+
+    updateCart();
 
   }
 
-  // ==========================
-  // คำนวณราคารวม
-  // ==========================
 
-  function updateSummary() {
+  // ==================================
+  // 5. คำนวณยอดรวม
+  // ==================================
 
-    let total = 0;
-    let summary = [];
+  function getTotal() {
+
+    return products.reduce((sum, product) => {
+
+      const quantity = cart[product.id] || 0;
+
+      return sum + product.price * quantity;
+
+    }, 0);
+
+  }
+
+
+  // ==================================
+  // 6. แสดงตะกร้าสินค้า
+  // ==================================
+
+  function updateCart() {
+
+    const cartItems = document.getElementById("cart-items");
+
+    const totalPrice = document.getElementById("total-price");
+
+    const minimumMessage = document.getElementById("minimum-message");
+
+    cartItems.innerHTML = "";
+
+    let hasItems = false;
 
     products.forEach(product => {
 
-      const quantity = cart[product.id];
+      const quantity = cart[product.id] || 0;
 
       if (quantity > 0) {
 
-        const subtotal = quantity * product.price;
+        hasItems = true;
 
-        total += subtotal;
+        const item = document.createElement("div");
+        item.className = "cart-item";
 
-        summary.push(
-          `${product.name} × ${quantity} = ${subtotal} บาท`
-        );
+        const name = document.createElement("span");
+        name.textContent = product.name + " x " + quantity;
+
+        const price = document.createElement("span");
+        price.textContent = (product.price * quantity) + " บาท";
+
+        item.append(name, price);
+
+        cartItems.appendChild(item);
 
       }
 
     });
 
-    document.getElementById("summary").textContent =
-      summary.length
-        ? summary.join("\n")
-        : "ยังไม่ได้เลือกสินค้า";
+    if (!hasItems) {
+      cartItems.textContent = "ยังไม่ได้เลือกสินค้า";
+    }
 
-    document.getElementById("summary").style.whiteSpace = "pre-line";
+    const total = getTotal();
 
-    document.getElementById("total").textContent =
-      `รวม ${total} บาท`;
+    totalPrice.textContent = "ยอดรวม " + total + " บาท";
+
+    if (total < MINIMUM_ORDER) {
+
+      const remaining = MINIMUM_ORDER - total;
+
+      minimumMessage.textContent =
+        "⚠️ กรุณาสั่งเพิ่มอีก " + remaining + " บาท";
+
+      minimumMessage.style.color = "#b45309";
+
+    } else {
+
+      minimumMessage.textContent =
+        "✅ ยอดครบขั้นต่ำ สามารถสั่งซื้อได้แล้ว";
+
+      minimumMessage.style.color = "#16a34a";
+
+    }
 
   }
 
-  // ==========================
-  // ส่งคำสั่งซื้อ
-  // ==========================
 
-  document.getElementById("orderForm")
-    .addEventListener("submit", async function(event) {
+  // ==================================
+  // 7. ส่งคำสั่งซื้อ
+  // ==================================
+
+  document.getElementById("order-form").addEventListener(
+    "submit",
+    async function(event) {
 
       event.preventDefault();
 
-      const message = document.getElementById("message");
-      const submitBtn = document.getElementById("submitBtn");
+      const message = document.getElementById("order-message");
+      const submitBtn = document.getElementById("submit-btn");
 
-      const customer = document.getElementById("customer").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const spicy = document.getElementById("spicy").value;
-      const note = document.getElementById("note").value.trim();
+      const total = getTotal();
+
+      if (total < MINIMUM_ORDER) {
+
+        message.style.color = "red";
+
+        message.textContent =
+          "❌ สั่งซื้อขั้นต่ำ 100 บาท\n" +
+          "ยอดปัจจุบัน " + total + " บาท\n" +
+          "กรุณาสั่งเพิ่มอีก " +
+          (MINIMUM_ORDER - total) + " บาท";
+
+        return;
+
+      }
+
+      const name = document.getElementById("customer-name").value.trim();
+
+      const phone = document.getElementById("customer-phone").value.trim();
+
+      const orderType = document.getElementById("order-type").value;
+
+      const address = document.getElementById("customer-address").value.trim();
+
+      const note = document.getElementById("customer-note").value.trim();
+
+      if (!name || !phone || !orderType) {
+
+        message.style.color = "red";
+        message.textContent = "กรุณากรอกข้อมูลให้ครบถ้วน";
+
+        return;
+
+      }
+
+      if (orderType === "จัดส่ง" && !address) {
+
+        message.style.color = "red";
+        message.textContent = "กรุณากรอกที่อยู่จัดส่ง";
+
+        return;
+
+      }
 
       const items = products
-        .filter(product => cart[product.id] > 0)
+        .filter(product => (cart[product.id] || 0) > 0)
         .map(product => ({
-          name: product.name,
-          qty: cart[product.id],
           id: product.id,
+          name: product.name,
+          price: product.price,
           quantity: cart[product.id]
         }));
 
-      if (!customer) {
-        message.textContent = "❌ กรุณากรอกชื่อลูกค้า";
-        return;
-      }
-
-      const totalPrice = catalog.reduce(
-  (sum, x) => sum + x.price * counts[x.id],
-  0
-);
-
-if (totalPrice < 100) {
-  msg.textContent = `❌ ยอดสั่งซื้อขั้นต่ำ 100 บาท
-ยอดปัจจุบัน ${totalPrice} บาท
-กรุณาเลือกสินค้าเพิ่มอีก ${100 - totalPrice} บาท`;
-  return;
-}
+      const orderData = {
+        name: name,
+        phone: phone,
+        orderType: orderType,
+        address: address,
+        note: note,
+        items: items,
+        total: total
+      };
 
       submitBtn.disabled = true;
-      message.textContent = "⏳ กำลังส่งคำสั่งซื้อ...";
+      submitBtn.textContent = "⏳ กำลังส่งคำสั่งซื้อ...";
+
+      message.style.color = "#444";
+      message.textContent = "กำลังส่งข้อมูล กรุณารอสักครู่";
 
       try {
 
@@ -411,63 +629,59 @@ if (totalPrice < 100) {
             headers: {
               "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-              customer: customer,
-              customerName: customer,
-              name: customer,
-              phone: phone,
-              spicy: spicy,
-              spice: spicy,
-              note: note,
-              items: items
-            })
+            body: JSON.stringify(orderData)
           }
         );
 
-        const data = await response.json().catch(() => ({}));
+        const result = await response.json();
 
         if (!response.ok) {
           throw new Error(
-            data.error ||
-            `ระบบขัดข้อง (${response.status})`
+            result.error ||
+            result.message ||
+            "ไม่สามารถส่งคำสั่งซื้อได้"
           );
         }
 
+        message.style.color = "green";
         message.textContent =
-          "✅ ส่งคำสั่งซื้อเข้าร้านสำเร็จ!\n" +
-          "เลขที่ออเดอร์: " + (data.orderId || "-");
+          "✅ ส่งคำสั่งซื้อสำเร็จ!\n" +
+          "ขอบคุณที่อุดหนุนร้านหม่าล่าสามสหาย ❤️";
 
-        // ล้างตะกร้าเมื่อส่งสำเร็จ
-        products.forEach(product => {
-          cart[product.id] = 0;
+        document.getElementById("order-form").reset();
+
+        Object.keys(cart).forEach(id => {
+          cart[id] = 0;
         });
 
-        displayMenu();
-        updateSummary();
-
-        document.getElementById("orderForm").reset();
+        renderProducts();
+        updateCart();
 
       } catch (error) {
 
+        message.style.color = "red";
+
         message.textContent =
-          "❌ ส่งไม่สำเร็จ: " +
-          error.message +
-          "\nกรุณาติดต่อร้านก่อนสั่งซ้ำ";
+          "❌ ส่งคำสั่งซื้อไม่สำเร็จ\n" +
+          error.message;
 
       } finally {
 
         submitBtn.disabled = false;
+        submitBtn.textContent = "📲 ยืนยันคำสั่งซื้อ";
 
       }
 
-    });
+    }
+  );
 
-  // ==========================
-  // เริ่มต้นเว็บไซต์
-  // ==========================
 
-  displayMenu();
-  updateSummary();
+  // ==================================
+  // 8. เริ่มต้นระบบ
+  // ==================================
+
+  renderProducts();
+  updateCart();
 
 </script>
 
