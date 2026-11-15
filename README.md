@@ -32,7 +32,7 @@ LINE_TO_ID=
 ## 2. ตั้ง LINE ร้าน
 1. สร้าง LINE Official Account และเปิดใช้งาน Messaging API channel ที่ LINE Developers
 2. สร้าง Channel access token แล้วใส่ใน `LINE_CHANNEL_ACCESS_TOKEN`
-3. ระบุ `LINE_TO_ID` เป็น **userId/groupId** ที่บอตสามารถ push message ได้ (ไม่ใช่ชื่อ LINE ID หรือ URL LINE)
+3. ระบุ `LINE_TO_ID` เป็น **2012614449** ที่บอตสามารถ push message ได้ (ไม่ใช่ชื่อ LINE ID หรือ URL LINE)
 4. เพิ่มบัญชีบอตเป็นเพื่อนหรือเชิญเข้ากลุ่มที่รองรับ และตรวจสิทธิ์/โควตาการส่งข้อความ
 5. รีสตาร์ตแอป ทดลองสั่งอาหารหนึ่งออเดอร์ และตรวจสถานะ LINE ในหลังบ้านว่า `sent`
 
