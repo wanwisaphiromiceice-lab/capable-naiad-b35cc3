@@ -1,0 +1,1 @@
+{"name":"mala-delivery","version":"1.0.0","private":true,"scripts":{"start":"node server.js"},"dependencies":{"express":"^4.21.2","better-sqlite3":"^11.8.1","bcryptjs":"^2.4.3","express-session":"^1.18.1","connect-sqlite3":"^0.9.15","qrcode":"^1.5.4","dotenv":"^16.4.7","helmet":"^8.0.0","express-rate-limit":"^7.5.0"},"engines":{"node":">=20"}}
