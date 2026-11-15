@@ -387,10 +387,17 @@
         return;
       }
 
-      if (items.length === 0) {
-        message.textContent = "❌ กรุณาเลือกสินค้าอย่างน้อย 1 ไม้";
-        return;
-      }
+      const totalPrice = catalog.reduce(
+  (sum, x) => sum + x.price * counts[x.id],
+  0
+);
+
+if (totalPrice < 100) {
+  msg.textContent = `❌ ยอดสั่งซื้อขั้นต่ำ 100 บาท
+ยอดปัจจุบัน ${totalPrice} บาท
+กรุณาเลือกสินค้าเพิ่มอีก ${100 - totalPrice} บาท`;
+  return;
+}
 
       submitBtn.disabled = true;
       message.textContent = "⏳ กำลังส่งคำสั่งซื้อ...";
