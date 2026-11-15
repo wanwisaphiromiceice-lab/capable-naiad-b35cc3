@@ -196,7 +196,7 @@
       placeholder="กรอกชื่อลูกค้า"
     >
 
-    <label for="phone">เบอร์โทรศัพท์ (ไม่บังคับ)</label>
+    <label for="phone">เบอร์โทรศัพท์</label>
     <input
       type="tel"
       id="phone"
@@ -212,11 +212,11 @@
       <option value="เผ็ดมาก">เผ็ดมาก</option>
     </select>
 
-    <label for="note">หมายเหตุเพิ่มเติม</label>
+    <label for="note">ที่อยู่ในการจัดส่ง</label>
     <textarea
       id="note"
       maxlength="300"
-      placeholder="เช่น ไม่ใส่ผักชี"
+      placeholder="เช่น ชื่อหมู่บ้าน/บ้านเลขที่/ซอย"
     ></textarea>
 
     <button
@@ -240,12 +240,17 @@
   // ==========================
 
   const products = [
-    { id: "pork", name: "หมูสามชั้น", price: 15 },
-    { id: "chicken", name: "ไก่หมัก", price: 10 },
-    { id: "meatball", name: "ลูกชิ้นหมู", price: 10 },
-    { id: "sausage", name: "ไส้กรอกชีส", price: 15 },
-    { id: "mushroom", name: "เห็ดเข็มทอง", price: 10 },
-    { id: "crab", name: "ปูอัด", price: 10 }
+    { id: "pork", name: "หมู", price: 10 },
+    { id: "chicken", name: "ไก่", price: 10 },
+    { id: "meatball", name: "ปลาดอลี่", price: 10 },
+    { id: "sausage", name: "ไส้กรอกชีส", price: 10 },
+    { id: "mushroom", name: "ไส้กรอกแดงแหลมทอง", price: 10 },
+    { id: "mushroom", name: "เต้าหู้ปลาสี่เหลี่ยม", price: 10 },
+    { id: "mushroom", name: "หมูยอ", price: 10 },
+    { id: "mushroom", name: "โบโลน่า", price: 10 },
+  { id: "mushroom", name: "ปูอัด", price: 10 }
+    { id: "crab", name: "ไส้กรอกหนังกรอบ", price: 10 },
+  { id: "mushroom", name: "หมึกหลอด", price: 10 }
   ];
 
   const cart = {};
