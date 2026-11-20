@@ -1,694 +1,599 @@
-<!doctype html>
-<html lang="th">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>หม่าล่าสามสหาย | สั่งอาหารออนไลน์</title>
+const crypto = require("node:crypto");
 
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#fff7ed;color:#292524;font:16px Tahoma,Arial,sans-serif}
-header{background:linear-gradient(120deg,#991b1b,#ea580c);color:white;text-align:center;padding:26px 12px}
-h1{margin:0 0 8px}
-nav{position:sticky;top:0;display:flex;gap:8px;justify-content:center;background:white;padding:10px;box-shadow:0 2px 8px #0002;z-index:2}
-main{max-width:900px;margin:auto;padding:12px}
-.card{background:white;border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 3px 10px #0001}
-h2{color:#991b1b;margin:0 0 12px}
-button{border:0;border-radius:10px;padding:11px 13px;font:inherit;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.55}
-.red{background:#dc2626;color:white}
-.green{background:#15803d;color:white}
-.blue{background:#2563eb;color:white}
-.dark{background:#292524;color:white}
-.gray{background:#e7e5e4}
-.full{width:100%;margin-top:14px;padding:15px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px}
-.product{border:1px solid #eee;border-radius:12px;padding:13px;text-align:center}
-.product b{display:block;min-height:45px}
-.product .icon{font-size:35px}
-.price{color:#dc2626;font-weight:bold;margin:8px}
-.row{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #eee;padding:12px 0}
-.qty{display:flex;align-items:center;gap:10px}
-.qty button{padding:7px 12px}
-label{display:block;margin-top:12px;font-weight:bold}
-input,select,textarea{display:block;width:100%;padding:12px;border:1px solid #d6d3d1;border-radius:9px;margin-top:6px;font:inherit}
-textarea{resize:vertical}
-.notice{background:#ffedd5;padding:13px;border-radius:10px;margin:14px 0;line-height:1.7}
-.total{text-align:right;color:#b91c1c;font-size:23px;font-weight:bold}
-.error{color:#b91c1c;font-weight:bold}
-.ok{color:#166534;font-weight:bold}
-[hidden]{display:none!important}
-.status{background:#fef3c7;border-radius:14px;padding:22px;text-align:center;font-size:22px}
-.order{border:1px solid #ddd;border-radius:12px;padding:15px;margin:12px 0;line-height:1.8;overflow-wrap:anywhere}
-.order button{margin:5px 0}
-footer{text-align:center;color:#777;padding:24px}
-@media(max-width:500px){
-.grid{grid-template-columns:repeat(2,1fr)}
-nav button{font-size:12px;padding:10px 6px}
-}
-</style>
-</head>
+const MENU = [
+  ["M01", "หมู", 10],
+  ["M02", "ไก่", 10],
+  ["M03", "ปลาดอลี่", 10],
+  ["M04", "ไส้กรอกชีส", 10],
+  ["M05", "ไส้กรอกแดงแหลมทอง", 10],
+  ["M06", "เต้าหู้ปลาสี่เหลี่ยม", 10],
+  ["M07", "หมูยอ", 10],
+  ["M08", "โบโลน่า", 10],
+  ["M09", "ปูอัด", 10],
+  ["M10", "ไส้กรอกหนังกรอบ", 10],
+  ["M11", "หมึกหลอด", 10],
 
-<body>
-
-<header>
-<h1>🌶️ หม่าล่าสามสหาย ❤️</h1>
-<div>🍢 หม่าล่าไม้ละ 10 บาท • 🥤 น้ำปั่นแก้วละ 30 บาท</div>
-</header>
-
-<nav>
-<button class="red" onclick="page('shop')">🛒 สั่งอาหาร</button>
-<button class="blue" onclick="openTracking()">📦 ติดตาม</button>
-<button class="dark" onclick="page('admin')">🔐 สำหรับร้าน</button>
-</nav>
-
-<main>
-
-<section id="shop">
-
-<div class="notice">
-ขั้นต่ำ 100 บาท (ไม่รวมค่าจัดส่ง)<br>
-ค่าจัดส่ง 20 บาท • รับเองฟรี<br>
-ไม่มีระบบยกเลิกออเดอร์
-</div>
-
-<div class="card">
-<h2>🍢 เมนูหม่าล่า</h2>
-<div id="malaMenu" class="grid"></div>
-</div>
-
-<div class="card">
-<h2>🥤 เมนูน้ำปั่น</h2>
-<div id="drinkMenu" class="grid"></div>
-</div>
-
-<div class="card">
-<h2>🛒 ตะกร้าสินค้า</h2>
-<div id="cart"></div>
-<p id="subtotal"></p>
-<p id="deliveryFee"></p>
-<div class="total" id="total"></div>
-</div>
-
-<div class="card">
-<h2>📝 ข้อมูลลูกค้า</h2>
-
-<label>ชื่อผู้สั่ง
-<input id="name" maxlength="100" placeholder="ชื่อ-นามสกุล">
-</label>
-
-<label>เบอร์โทรศัพท์
-<input id="phone" type="tel" maxlength="10" placeholder="08xxxxxxxx">
-</label>
-
-<label>วิธีรับสินค้า
-<select id="orderType" onchange="renderCart()">
-<option value="delivery">จัดส่ง (+20 บาท)</option>
-<option value="pickup">รับเองที่ร้าน (ฟรี)</option>
-</select>
-</label>
-
-<label id="addressLabel">ที่อยู่จัดส่ง
-<textarea id="address" maxlength="500" placeholder="บ้านเลขที่ ซอย หมู่บ้าน จุดสังเกต"></textarea>
-</label>
-
-<label>วิธีชำระเงิน
-<select id="payment">
-<option value="cash">เงินสด / เก็บเงินปลายทาง</option>
-<option value="transfer">โอนเงิน</option>
-</select>
-</label>
-
-<div id="sauceBox">
-
-<label>เลือกซอส
-<select id="sauce" onchange="renderSauce()">
-<option value="">-- เลือกซอส --</option>
-<option>ซอสหม่าล่า</option>
-<option>ซอสบาร์บีคิว</option>
-</select>
-</label>
-
-<label id="spicyLabel">ระดับความเผ็ด
-<select id="spicy">
-<option value="">-- เลือกระดับ --</option>
-<option>เผ็ดน้อย</option>
-<option>เผ็ดกลาง</option>
-<option>เผ็ดมาก</option>
-</select>
-</label>
-
-<label>วิธีใส่ซอส
-<select id="sauceMethod">
-<option value="">-- เลือกวิธี --</option>
-<option>ราดซอส</option>
-<option>แยกซอส</option>
-</select>
-</label>
-
-</div>
-
-<label>หมายเหตุ
-<textarea id="note" maxlength="500" placeholder="รายละเอียดเพิ่มเติม"></textarea>
-</label>
-
-<div class="notice">
-กดยืนยันเพียงครั้งเดียว ระบบจะบันทึกออเดอร์ก่อนแสดงเลขคำสั่งซื้อ
-</div>
-
-<button id="submitBtn" class="green full" onclick="submitOrder()">
-✅ ยืนยันคำสั่งซื้อ
-</button>
-
-<p class="error" id="submitError"></p>
-
-</div>
-</section>
-
-<section id="tracking" hidden>
-<div class="card">
-
-<h2>📦 ติดตามสถานะ</h2>
-
-<p>เลขออเดอร์: <strong id="orderId"></strong></p>
-<p id="trackTotal"></p>
-
-<div class="status" id="status">กำลังโหลด...</div>
-
-<p class="error" id="trackError"></p>
-
-<button class="blue full" onclick="refreshTracking()">
-🔄 อัปเดตสถานะ
-</button>
-
-<p>ตรวจสอบอัตโนมัติทุก 10 วินาที</p>
-
-</div>
-</section>
-
-<section id="admin" hidden>
-<div class="card">
-
-<h2>🔐 จัดการออเดอร์ร้าน</h2>
-
-<div id="loginBox">
-
-<label>รหัสผ่านร้าน
-<input id="adminPassword" type="password" autocomplete="current-password">
-</label>
-
-<button class="dark full" onclick="login()">เข้าสู่ระบบ</button>
-
-<p class="error" id="loginError"></p>
-
-</div>
-
-<div id="dashboard" hidden>
-
-<button class="blue" onclick="loadOrders()">🔄 รีเฟรชออเดอร์</button>
-<button class="gray" onclick="logout()">ออกจากระบบ</button>
-
-<div id="orders"></div>
-
-</div>
-</div>
-</section>
-
-</main>
-
-<footer>❤️ ขอบคุณที่อุดหนุนร้านหม่าล่าสามสหาย ❤️</footer>
-
-<script>
-"use strict";
-
-const API="/.netlify/functions/order";
-
-const PRODUCTS=[
-["M01","หมู",10],
-["M02","ไก่",10],
-["M03","ปลาดอลี่",10],
-["M04","ไส้กรอกชีส",10],
-["M05","ไส้กรอกแดงแหลมทอง",10],
-["M06","เต้าหู้ปลาสี่เหลี่ยม",10],
-["M07","หมูยอ",10],
-["M08","โบโลน่า",10],
-["M09","ปูอัด",10],
-["M10","ไส้กรอกหนังกรอบ",10],
-["M11","หมึกหลอด",10],
-
-["D01","กีวี่ปั่น",30],
-["D02","สตรอว์เบอร์รีปั่น",30],
-["D03","สับปะรดปั่น",30],
-["D04","ส้มปั่น",30],
-["D05","แตงโมปั่น",30],
-["D06","เสาวรสปั่น",30],
-["D07","ไมโลปั่น",30],
-["D08","M-150 ปั่น",30],
-["D09","เลิฟซ่าองุ่นเคียวโฮปั่น",30],
-["D10","เลิฟซ่าฮันนี่เลมอนปั่น",30],
-["D11","เลิฟซ่าลิ้นจี่ปั่น",30],
-["D12","เลิฟซ่าโยเกิร์ตปั่น",30]
+  ["D01", "กีวี่ปั่น", 30],
+  ["D02", "สตรอว์เบอร์รีปั่น", 30],
+  ["D03", "สับปะรดปั่น", 30],
+  ["D04", "ส้มปั่น", 30],
+  ["D05", "แตงโมปั่น", 30],
+  ["D06", "เสาวรสปั่น", 30],
+  ["D07", "ไมโลปั่น", 30],
+  ["D08", "M-150 ปั่น", 30],
+  ["D09", "เลิฟซ่าองุ่นเคียวโฮปั่น", 30],
+  ["D10", "เลิฟซ่าฮันนี่เลมอนปั่น", 30],
+  ["D11", "เลิฟซ่าลิ้นจี่ปั่น", 30],
+  ["D12", "เลิฟซ่าโยเกิร์ตปั่น", 30]
 ];
 
-const $=id=>document.getElementById(id);
+const catalog = new Map(
+  MENU.map(([id, name, price]) => [
+    id,
+    { id, name, price }
+  ])
+);
 
-const cart={};
-
-let current=null;
-let adminToken="";
-let trackTimer=null;
-let adminTimer=null;
-let busy=false;
-
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#39;"
-}[c]));
-
-const money=n=>Number(n||0).toLocaleString("th-TH")+" บาท";
-
-function menus(){
-PRODUCTS.forEach(([id,name,price])=>{
-const d=document.createElement("div");
-d.className="product";
-
-d.innerHTML=`
-<div class="icon">${id[0]==="M"?"🍢":"🥤"}</div>
-<b>${esc(name)}</b>
-<div class="price">${money(price)}</div>
-<button class="red">+ เพิ่ม</button>
-`;
-
-d.querySelector("button").onclick=()=>{
-cart[id]=Math.min(100,(cart[id]||0)+1);
-renderCart();
-};
-
-$(id[0]==="M"?"malaMenu":"drinkMenu").append(d);
-});
+function reply(statusCode, data) {
+  return {
+    statusCode,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store"
+    },
+    body: JSON.stringify(data)
+  };
 }
 
-function items(){
-return PRODUCTS
-.filter(([id])=>cart[id]>0)
-.map(([id,name,price])=>({
-id,name,price,qty:cart[id]
-}));
+function success(data) {
+  return reply(200, {
+    success: true,
+    ...data
+  });
 }
 
-function subtotal(){
-return items().reduce((s,p)=>s+p.price*p.qty,0);
+function error(statusCode, message) {
+  return reply(statusCode, {
+    success: false,
+    message
+  });
 }
 
-function fee(){
-return $("orderType").value==="delivery"?20:0;
+function safeEqual(a, b) {
+  const first = crypto
+    .createHash("sha256")
+    .update(String(a))
+    .digest();
+
+  const second = crypto
+    .createHash("sha256")
+    .update(String(b))
+    .digest();
+
+  return crypto.timingSafeEqual(first, second);
 }
 
-function mala(){
-return items().some(x=>x.id.startsWith("M"));
+function createAdminToken() {
+  const payload = Buffer.from(
+    JSON.stringify({
+      expires: Date.now() + 8 * 60 * 60 * 1000
+    })
+  ).toString("base64url");
+
+  const signature = crypto
+    .createHmac("sha256", process.env.ADMIN_PASSWORD)
+    .update(payload)
+    .digest("base64url");
+
+  return `${payload}.${signature}`;
 }
 
-function renderSauce(){
-$("spicyLabel").hidden=$("sauce").value!=="ซอสหม่าล่า";
+function verifyAdminToken(token) {
+  if (!process.env.ADMIN_PASSWORD) {
+    return false;
+  }
+
+  const parts = String(token || "").split(".");
+
+  if (parts.length !== 2) {
+    return false;
+  }
+
+  const [payload, signature] = parts;
+
+  const expected = crypto
+    .createHmac("sha256", process.env.ADMIN_PASSWORD)
+    .update(payload)
+    .digest("base64url");
+
+  if (!safeEqual(signature, expected)) {
+    return false;
+  }
+
+  try {
+    const decoded = JSON.parse(
+      Buffer.from(payload, "base64url").toString()
+    );
+
+    return decoded.expires > Date.now();
+  } catch {
+    return false;
+  }
 }
 
-function renderCart(){
+async function sendLineNotification(message) {
+  const token = process.env.LINE_CHANNEL_ACCESS_TOKEN;
+  const userId = process.env.LINE_ADMIN_USER_ID;
 
-const box=$("cart");
-box.replaceChildren();
+  if (!token || !userId) {
+    return "not_configured";
+  }
 
-const selected=items();
+  try {
+    const response = await fetch(
+      "https://api.line.me/v2/bot/message/push",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          to: userId,
+          messages: [
+            {
+              type: "text",
+              text: message.slice(0, 4900)
+            }
+          ]
+        })
+      }
+    );
 
-if(!selected.length){
-box.textContent="ยังไม่มีสินค้าในตะกร้า";
+    return response.ok ? "sent" : "failed";
+  } catch (err) {
+    console.error("LINE ERROR:", err);
+    return "failed";
+  }
 }
 
-selected.forEach(p=>{
+async function handler(event) {
+  if (event.httpMethod !== "POST") {
+    return error(405, "อนุญาตเฉพาะ POST");
+  }
 
-const row=document.createElement("div");
-row.className="row";
+  if ((event.body || "").length > 25000) {
+    return error(413, "ข้อมูลมีขนาดใหญ่เกินไป");
+  }
 
-const label=document.createElement("span");
-label.textContent=`${p.name} × ${p.qty} = ${money(p.price*p.qty)}`;
+  let data;
 
-const buttons=document.createElement("div");
-buttons.className="qty";
+  try {
+    data = JSON.parse(event.body || "{}");
+  } catch {
+    return error(400, "ข้อมูล JSON ไม่ถูกต้อง");
+  }
 
-for(const [symbol,delta] of [["−",-1],["+",1]]){
+  try {
+    // ใช้ API ของ Netlify Blobs โดยตรง
+    const { getStore } = await import("@netlify/blobs");
 
-const b=document.createElement("button");
-b.className=delta===1?"red":"gray";
-b.textContent=symbol;
+    const store = getStore("mala-orders-v1");
 
-b.onclick=()=>{
-cart[p.id]=Math.max(0,Math.min(100,(cart[p.id]||0)+delta));
-renderCart();
-};
+    const action = data.action;
 
-buttons.append(b);
+    // ==============================
+    // ตรวจสอบการทำงานของระบบ
+    // ==============================
+
+    if (action === "health") {
+      return success({
+        message: "ระบบรับออเดอร์พร้อมทำงาน"
+      });
+    }
+
+    // ==============================
+    // สร้างคำสั่งซื้อ
+    // ==============================
+
+    if (action === "createOrder") {
+      const p = data.payload || {};
+
+      const customerName = String(
+        p.customerName || ""
+      ).trim().slice(0, 100);
+
+      const phone = String(p.phone || "").trim();
+
+      const orderType = p.orderType;
+
+      const address = String(
+        p.address || ""
+      ).trim().slice(0, 500);
+
+      const payment = p.payment;
+
+      if (!customerName) {
+        return error(400, "กรุณากรอกชื่อลูกค้า");
+      }
+
+      if (!/^0\d{9}$/.test(phone)) {
+        return error(400, "เบอร์โทรศัพท์ไม่ถูกต้อง");
+      }
+
+      if (!["delivery", "pickup"].includes(orderType)) {
+        return error(400, "กรุณาเลือกวิธีรับสินค้า");
+      }
+
+      if (!["cash", "transfer"].includes(payment)) {
+        return error(400, "กรุณาเลือกวิธีชำระเงิน");
+      }
+
+      if (orderType === "delivery" && !address) {
+        return error(400, "กรุณากรอกที่อยู่จัดส่ง");
+      }
+
+      if (
+        !Array.isArray(p.items) ||
+        p.items.length === 0 ||
+        p.items.length > MENU.length
+      ) {
+        return error(400, "รายการสินค้าไม่ถูกต้อง");
+      }
+
+      let subtotal = 0;
+      let hasMala = false;
+
+      const items = [];
+      const usedIds = new Set();
+
+      for (const item of p.items) {
+        const product = catalog.get(item.id);
+        const qty = Number(item.qty);
+
+        if (
+          !product ||
+          !Number.isInteger(qty) ||
+          qty < 1 ||
+          qty > 100 ||
+          usedIds.has(item.id)
+        ) {
+          return error(400, "ข้อมูลสินค้าไม่ถูกต้อง");
+        }
+
+        usedIds.add(item.id);
+
+        items.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          qty
+        });
+
+        subtotal += product.price * qty;
+
+        if (product.id.startsWith("M")) {
+          hasMala = true;
+        }
+      }
+
+      if (subtotal < 100) {
+        return error(400, "ยอดสั่งซื้อขั้นต่ำ 100 บาท");
+      }
+
+      const sauce = hasMala
+        ? String(p.sauce || "")
+        : "";
+
+      const spicy = hasMala
+        ? String(p.spicy || "")
+        : "";
+
+      const sauceMethod = hasMala
+        ? String(p.sauceMethod || "")
+        : "";
+
+      if (hasMala) {
+        if (
+          !["ซอสหม่าล่า", "ซอสบาร์บีคิว"].includes(sauce)
+        ) {
+          return error(400, "กรุณาเลือกประเภทซอส");
+        }
+
+        if (
+          !["ราดซอส", "แยกซอส"].includes(sauceMethod)
+        ) {
+          return error(400, "กรุณาเลือกวิธีใส่ซอส");
+        }
+
+        if (
+          sauce === "ซอสหม่าล่า" &&
+          !["เผ็ดน้อย", "เผ็ดกลาง", "เผ็ดมาก"].includes(spicy)
+        ) {
+          return error(400, "กรุณาเลือกระดับความเผ็ด");
+        }
+      }
+
+      const deliveryFee =
+        orderType === "delivery" ? 20 : 0;
+
+      const total = subtotal + deliveryFee;
+
+      const orderId =
+        "MS-" +
+        Date.now().toString(36).toUpperCase() +
+        "-" +
+        crypto.randomBytes(4).toString("hex").toUpperCase();
+
+      const trackingKey = crypto
+        .randomBytes(24)
+        .toString("hex");
+
+      const order = {
+        orderId,
+        trackingKey,
+        customerName,
+        phone,
+        orderType,
+        address: orderType === "delivery" ? address : "",
+        payment,
+        sauce,
+        spicy,
+        sauceMethod,
+        note: String(p.note || "").trim().slice(0, 500),
+        items,
+        subtotal,
+        deliveryFee,
+        total,
+        status: "preparing",
+        createdAt: new Date().toISOString()
+      };
+
+      // บันทึกออเดอร์ก่อนตอบกลับลูกค้า
+      const saved = await store.setJSON(
+        `order-${orderId}`,
+        order,
+        { onlyIfNew: true }
+      );
+
+      if (!saved.modified) {
+        return error(
+          500,
+          "ไม่สามารถบันทึกออเดอร์ได้ กรุณาติดต่อร้าน"
+        );
+      }
+
+      // LINE แจ้งเตือนร้าน (ไม่ทำให้การบันทึกออเดอร์ล้มเหลว)
+      const lineMessage = [
+        "🌶️ หม่าล่าสามสหาย",
+        "🛒 มีคำสั่งซื้อใหม่",
+        "",
+        `เลขออเดอร์: ${orderId}`,
+        `ลูกค้า: ${customerName}`,
+        `โทร: ${phone}`,
+        `วิธีรับ: ${orderType === "delivery" ? "จัดส่ง" : "รับที่ร้าน"}`,
+        `ที่อยู่: ${address || "-"}`,
+        "",
+        "รายการสินค้า:",
+        ...items.map(
+          x => `${x.name} × ${x.qty} = ${x.price * x.qty} บาท`
+        ),
+        "",
+        `ซอส: ${sauce || "-"}`,
+        `ความเผ็ด: ${spicy || "-"}`,
+        `วิธีใส่ซอส: ${sauceMethod || "-"}`,
+        `หมายเหตุ: ${order.note || "-"}`,
+        `ชำระเงิน: ${payment === "transfer" ? "โอนเงิน" : "เงินสด"}`,
+        `รวมทั้งสิ้น: ${total} บาท`
+      ].join("\n");
+
+      const lineNotification =
+        await sendLineNotification(lineMessage);
+
+      return success({
+        orderId,
+        trackingKey,
+        total,
+        status: "preparing",
+        lineNotification
+      });
+    }
+
+    // ==============================
+    // ลูกค้าติดตามสถานะ
+    // ==============================
+
+    if (action === "getOrderStatus") {
+      const orderId = String(data.orderId || "");
+
+      if (!/^MS-[A-Z0-9-]+$/.test(orderId)) {
+        return error(400, "เลขออเดอร์ไม่ถูกต้อง");
+      }
+
+      const order = await store.get(
+        `order-${orderId}`,
+        { type: "json" }
+      );
+
+      if (
+        !order ||
+        !safeEqual(
+          order.trackingKey,
+          data.trackingKey || ""
+        )
+      ) {
+        return error(404, "ไม่พบคำสั่งซื้อ");
+      }
+
+      return success({
+        orderId: order.orderId,
+        orderType: order.orderType,
+        total: order.total,
+        status: order.status
+      });
+    }
+
+    // ==============================
+    // ร้านเข้าสู่ระบบ
+    // ==============================
+
+    if (action === "adminLogin") {
+      const adminPassword = process.env.ADMIN_PASSWORD;
+
+      if (
+        !adminPassword ||
+        adminPassword.length < 12
+      ) {
+        return error(
+          503,
+          "กรุณาตั้งค่า ADMIN_PASSWORD ใน Netlify อย่างน้อย 12 ตัวอักษร"
+        );
+      }
+
+      if (
+        !safeEqual(
+          data.password || "",
+          adminPassword
+        )
+      ) {
+        return error(401, "รหัสผ่านร้านไม่ถูกต้อง");
+      }
+
+      return success({
+        token: createAdminToken()
+      });
+    }
+
+    // ==============================
+    // ร้านดูรายการออเดอร์
+    // ==============================
+
+    if (action === "getAdminOrders") {
+      if (!verifyAdminToken(data.token)) {
+        return error(401, "กรุณาเข้าสู่ระบบร้านใหม่");
+      }
+
+      const orders = [];
+      let cursor;
+
+      do {
+        const page = await store.list({
+          prefix: "order-",
+          cursor
+        });
+
+        for (const blob of page.blobs) {
+          const order = await store.get(
+            blob.key,
+            { type: "json" }
+          );
+
+          if (order) {
+            const { trackingKey, ...safeOrder } = order;
+            orders.push(safeOrder);
+          }
+        }
+
+        cursor = page.next_cursor;
+
+      } while (cursor && orders.length < 1000);
+
+      orders.sort(
+        (a, b) =>
+          b.createdAt.localeCompare(a.createdAt)
+      );
+
+      return success({
+        orders: orders.slice(0, 300)
+      });
+    }
+
+    // ==============================
+    // ร้านเปลี่ยนสถานะ
+    // ==============================
+
+    if (action === "updateOrderStatus") {
+      if (!verifyAdminToken(data.token)) {
+        return error(401, "กรุณาเข้าสู่ระบบร้านใหม่");
+      }
+
+      const orderId = String(data.orderId || "");
+      const nextStatus = String(data.nextStatus || "");
+
+      if (!/^MS-[A-Z0-9-]+$/.test(orderId)) {
+        return error(400, "เลขออเดอร์ไม่ถูกต้อง");
+      }
+
+      const order = await store.get(
+        `order-${orderId}`,
+        { type: "json" }
+      );
+
+      if (!order) {
+        return error(404, "ไม่พบคำสั่งซื้อ");
+      }
+
+      let allowedNext = null;
+
+      if (order.status === "preparing") {
+        allowedNext =
+          order.orderType === "delivery"
+            ? "delivering"
+            : "ready_pickup";
+      } else if (
+        order.status === "delivering" ||
+        order.status === "ready_pickup"
+      ) {
+        allowedNext = "completed";
+      }
+
+      if (nextStatus !== allowedNext) {
+        return error(
+          409,
+          "ไม่สามารถเปลี่ยนสถานะตามลำดับนี้ได้"
+        );
+      }
+
+      order.status = nextStatus;
+      order.updatedAt = new Date().toISOString();
+
+      await store.setJSON(
+        `order-${orderId}`,
+        order
+      );
+
+      const statusText = {
+        preparing: "กำลังเตรียมอาหาร",
+        delivering: "กำลังจัดส่ง",
+        ready_pickup: "รอรับสินค้า",
+        completed:
+          order.orderType === "delivery"
+            ? "จัดส่งสำเร็จ"
+            : "รับสินค้าเรียบร้อย"
+      };
+
+      const lineNotification =
+        await sendLineNotification(
+          `📦 ออเดอร์ ${orderId}\nสถานะ: ${statusText[nextStatus]}`
+        );
+
+      return success({
+        orderId,
+        status: nextStatus,
+        lineNotification
+      });
+    }
+
+    return error(400, "ไม่รู้จักคำสั่งที่ส่งมา");
+
+  } catch (err) {
+    console.error("ORDER FUNCTION ERROR:", err);
+
+    return error(
+      500,
+      "ระบบบันทึกออเดอร์ขัดข้อง กรุณาติดต่อร้านก่อนกดสั่งซ้ำ"
+    );
+  }
 }
 
-row.append(label,buttons);
-box.append(row);
-
-});
-
-$("subtotal").textContent="ค่าอาหาร: "+money(subtotal());
-$("deliveryFee").textContent="ค่าจัดส่ง: "+money(fee());
-$("total").textContent="รวม "+money(subtotal()+fee());
-
-$("addressLabel").hidden=$("orderType").value!=="delivery";
-$("sauceBox").hidden=!mala();
-
-renderSauce();
-}
-
-async function api(action,extra={}){
-
-const r=await fetch(API,{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({action,...extra})
-});
-
-let j;
-
-try{
-j=await r.json();
-}catch{
-throw Error("ติดต่อระบบหลังบ้านไม่ได้ กรุณาตรวจสอบว่าเว็บไซต์เผยแพร่บน Netlify แล้ว");
-}
-
-if(!r.ok||j.success===false){
-throw Error(j.message||"เกิดข้อผิดพลาด");
-}
-
-return j;
-}
-
-async function submitOrder(){
-
-if(busy)return;
-
-$("submitError").textContent="";
-
-if(subtotal()<100){
-$("submitError").textContent="กรุณาสั่งซื้อขั้นต่ำ 100 บาท";
-return;
-}
-
-const payload={
-customerName:$("name").value.trim(),
-phone:$("phone").value.trim(),
-orderType:$("orderType").value,
-address:$("address").value.trim(),
-payment:$("payment").value,
-sauce:mala()?$("sauce").value:"",
-spicy:mala()?$("spicy").value:"",
-sauceMethod:mala()?$("sauceMethod").value:"",
-note:$("note").value.trim(),
-items:items()
-};
-
-if(!payload.customerName||!/^0\d{9}$/.test(payload.phone)){
-$("submitError").textContent="กรุณากรอกชื่อและเบอร์โทร 10 หลัก";
-return;
-}
-
-if(payload.orderType==="delivery"&&!payload.address){
-$("submitError").textContent="กรุณากรอกที่อยู่จัดส่ง";
-return;
-}
-
-if(mala()&&(
-!payload.sauce||
-!payload.sauceMethod||
-(payload.sauce==="ซอสหม่าล่า"&&!payload.spicy)
-)){
-$("submitError").textContent="กรุณาเลือกซอส ระดับความเผ็ด และวิธีใส่ซอส";
-return;
-}
-
-busy=true;
-$("submitBtn").disabled=true;
-$("submitBtn").textContent="⏳ กำลังบันทึกออเดอร์...";
-
-try{
-
-const r=await api("createOrder",{payload});
-
-if(!r.orderId||!r.trackingKey){
-throw Error("ยังไม่ได้รับการยืนยันจากระบบ");
-}
-
-current={
-orderId:r.orderId,
-trackingKey:r.trackingKey
-};
-
-localStorage.setItem("malaLastOrder",JSON.stringify(current));
-
-for(const k of Object.keys(cart)){
-delete cart[k];
-}
-
-renderCart();
-page("tracking");
-
-$("orderId").textContent=r.orderId;
-$("trackTotal").textContent="ยอดรวม "+money(r.total);
-
-await refreshTracking();
-
-}catch(e){
-
-$("submitError").textContent=
-"❌ "+e.message+
-" หากไม่แน่ใจว่าออเดอร์ถูกบันทึกหรือไม่ กรุณาติดต่อร้านก่อนกดซ้ำ";
-
-}finally{
-
-busy=false;
-$("submitBtn").disabled=false;
-$("submitBtn").textContent="✅ ยืนยันคำสั่งซื้อ";
-
-}
-}
-
-function openTracking(){
-
-try{
-current=JSON.parse(localStorage.getItem("malaLastOrder")||"null");
-}catch{}
-
-if(!current){
-alert("ยังไม่มีออเดอร์สำหรับติดตาม");
-return;
-}
-
-page("tracking");
-refreshTracking();
-}
-
-async function refreshTracking(){
-
-if(!current)return;
-
-$("trackError").textContent="";
-
-try{
-
-const o=await api("getOrderStatus",current);
-
-$("orderId").textContent=o.orderId;
-$("trackTotal").textContent="ยอดรวม "+money(o.total);
-
-const statuses={
-preparing:"🟠 กำลังเตรียมอาหาร",
-delivering:"🔵 กำลังจัดส่ง",
-ready_pickup:"🟢 รอรับสินค้า",
-completed:o.orderType==="pickup"
-?"✅ รับสินค้าเรียบร้อย"
-:"✅ จัดส่งสำเร็จ"
-};
-
-$("status").textContent=statuses[o.status]||"ไม่ทราบสถานะ";
-
-}catch(e){
-$("trackError").textContent=e.message;
-}
-}
-
-function page(id){
-
-for(const x of ["shop","tracking","admin"]){
-$(x).hidden=x!==id;
-}
-
-clearInterval(trackTimer);
-clearInterval(adminTimer);
-
-if(id==="tracking"&&current){
-trackTimer=setInterval(refreshTracking,10000);
-}
-
-if(id==="admin"&&adminToken){
-adminTimer=setInterval(loadOrders,15000);
-}
-
-window.scrollTo(0,0);
-}
-
-async function login(){
-
-$("loginError").textContent="";
-
-try{
-
-const r=await api("adminLogin",{
-password:$("adminPassword").value
-});
-
-adminToken=r.token;
-
-$("adminPassword").value="";
-$("loginBox").hidden=true;
-$("dashboard").hidden=false;
-
-await loadOrders();
-
-clearInterval(adminTimer);
-adminTimer=setInterval(loadOrders,15000);
-
-}catch(e){
-$("loginError").textContent=e.message;
-}
-}
-
-function logout(){
-
-adminToken="";
-clearInterval(adminTimer);
-
-$("loginBox").hidden=false;
-$("dashboard").hidden=true;
-$("orders").replaceChildren();
-}
-
-async function loadOrders(){
-
-if(!adminToken)return;
-
-try{
-
-const r=await api("getAdminOrders",{token:adminToken});
-
-const box=$("orders");
-box.replaceChildren();
-
-if(!r.orders.length){
-box.textContent="ยังไม่มีคำสั่งซื้อ";
-return;
-}
-
-for(const o of r.orders){
-
-const d=document.createElement("div");
-d.className="order";
-
-const status={
-preparing:"🟠 กำลังเตรียมอาหาร",
-delivering:"🔵 กำลังจัดส่ง",
-ready_pickup:"🟢 รอรับสินค้า",
-completed:"✅ เสร็จสิ้น"
-}[o.status]||o.status;
-
-d.innerHTML=`
-<b>${esc(o.orderId)}</b><br>
-👤 ${esc(o.customerName)}<br>
-☎️ ${esc(o.phone)}<br>
-📍 ${esc(o.orderType==="delivery"?o.address:"รับเองที่ร้าน")}<br>
-🍢 ${o.items.map(x=>esc(x.name)+" × "+x.qty).join("<br>🍢 ")}<br>
-🌶️ ${esc(o.sauce||"-")} / ${esc(o.spicy||"-")} / ${esc(o.sauceMethod||"-")}<br>
-📝 ${esc(o.note||"-")}<br>
-💳 ${o.payment==="transfer"?"โอนเงิน":"เงินสด"}<br>
-💰 ${money(o.total)}<br>
-📦 ${esc(status)}<br>
-`;
-
-let next="";
-let caption="";
-
-if(o.status==="preparing"){
-
-next=o.orderType==="delivery"?"delivering":"ready_pickup";
-caption="🍢 อาหารเสร็จพร้อมส่ง";
-
-}else if(["delivering","ready_pickup"].includes(o.status)){
-
-next="completed";
-
-caption=o.orderType==="delivery"
-?"✅ ส่งออเดอร์เรียบร้อย"
-:"✅ รับสินค้าเรียบร้อย";
-}
-
-if(next){
-
-const b=document.createElement("button");
-b.className=next==="completed"?"green":"blue";
-b.textContent=caption;
-
-b.onclick=()=>changeStatus(o.orderId,next);
-
-d.append(b);
-}
-
-box.append(d);
-}
-
-}catch(e){
-
-$("orders").textContent="โหลดออเดอร์ไม่สำเร็จ: "+e.message;
-
-}
-}
-
-async function changeStatus(orderId,nextStatus){
-
-if(!confirm("ยืนยันการเปลี่ยนสถานะ "+orderId+" ?")){
-return;
-}
-
-try{
-
-const r=await api("updateOrderStatus",{
-token:adminToken,
-orderId,
-nextStatus
-});
-
-if(r.lineNotification==="failed"){
-alert("บันทึกสถานะแล้ว แต่แจ้ง LINE ไม่สำเร็จ");
-}
-
-await loadOrders();
-
-}catch(e){
-alert("❌ "+e.message);
-}
-}
-
-menus();
-renderCart();
-
-try{
-current=JSON.parse(localStorage.getItem("malaLastOrder")||"null");
-}catch{}
-
-</script>
-</body>
-</html>
+module.exports = { handler };
