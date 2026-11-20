@@ -2,398 +2,526 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>หม่าล่าสามสหาย | สั่งอาหารออนไลน์</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#fff7ed;color:#292524}
-header{background:linear-gradient(135deg,#7f1d1d,#dc2626,#f97316);color:white;text-align:center;padding:32px 15px}
-header h1{margin:0;font-size:30px}
-header p{margin:8px 0 0}
-main{max-width:900px;margin:auto;padding:15px}
-.card{background:white;padding:20px;margin:18px 0;border-radius:16px;box-shadow:0 3px 12px #00000012}
-h2{color:#991b1b;margin-top:0}
-.notice{background:#fef3c7;border:2px solid #f59e0b;border-radius:14px;padding:15px;text-align:center;font-weight:bold}
-.product{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid #eee}
-.product-info{flex:1}
-.product-name{font-weight:bold}
-.price{color:#dc2626;font-size:14px}
+body{margin:0;font-family:Arial,sans-serif;background:#fff7ed;color:#333}
+header{background:linear-gradient(135deg,#c91d26,#ff7b00);color:white;text-align:center;padding:30px 15px}
+header h1{margin:0;font-size:32px}
+header p{margin:10px 0 0}
+nav{background:white;padding:12px;display:flex;justify-content:center;gap:10px;position:sticky;top:0;z-index:10;box-shadow:0 2px 10px #0001}
+button{border:0;border-radius:10px;padding:11px 15px;font-size:15px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:#e63946;color:white}
+.green{background:#198754;color:white}
+.blue{background:#0d6efd;color:white}
+.gray{background:#eee;color:#333}
+.container{max-width:1050px;margin:auto;padding:15px}
+.card{background:white;border-radius:16px;padding:20px;margin:15px 0;box-shadow:0 3px 12px #0001}
+h2{color:#c91d26}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.product{border:1px solid #eee;border-radius:12px;padding:15px;text-align:center}
+.icon{font-size:38px}
+.product-name{min-height:42px;margin:10px 0;font-weight:bold}
+.price{color:#d62828;font-weight:bold;margin-bottom:10px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #eee;padding:12px 0}
 .qty{display:flex;align-items:center;gap:10px}
-.qty button{width:38px;height:38px;border:0;border-radius:10px;background:#dc2626;color:white;font-size:23px;cursor:pointer}
-.qty span{min-width:25px;text-align:center;font-weight:bold}
-.option{display:flex;gap:10px;align-items:center;padding:12px;margin:8px 0;border:2px solid #e5e7eb;border-radius:12px;cursor:pointer}
-.option input{accent-color:#dc2626;width:19px;height:19px}
-fieldset{border:2px solid #fed7aa;border-radius:13px;margin:15px 0;padding:14px}
-legend{font-weight:bold;color:#991b1b;padding:0 8px}
-label.field{display:block;font-weight:bold;margin-top:15px}
-input.text,select,textarea{width:100%;padding:12px;margin-top:6px;border:1px solid #d6d3d1;border-radius:10px;font:16px Tahoma,Arial,sans-serif}
-textarea{min-height:85px;resize:vertical}
-.cart-row{padding:10px 0;border-bottom:1px solid #eee}
-.total{text-align:right;font-size:25px;font-weight:bold;color:#dc2626;margin-top:16px}
-.status{background:#fef3c7;padding:12px;border-radius:10px;margin-top:12px}
-.status.ok{background:#dcfce7;color:#166534}
-button.submit,button.copy{width:100%;padding:16px;margin-top:18px;border:0;border-radius:12px;background:#16a34a;color:white;font-size:18px;font-weight:bold;cursor:pointer}
-button.copy{background:#2563eb;font-size:16px}
-.receipt{background:#f0fdf4;border:2px solid #86efac;padding:15px;border-radius:12px;margin-top:18px}
-.receipt textarea{min-height:300px;background:white}
-.error{color:#b91c1c;font-weight:bold}
-footer{text-align:center;padding:25px;color:#78716c}
-[hidden]{display:none!important}
-@media(max-width:480px){main{padding:10px}.card{padding:15px}.product-name{font-size:14px}}
+.qty button{padding:7px 12px}
+label{font-weight:bold;display:block;margin-top:12px}
+input,select,textarea{width:100%;padding:12px;margin-top:7px;border:1px solid #ddd;border-radius:9px;font-size:16px}
+.total{font-size:23px;font-weight:bold;color:#c91d26;text-align:right;margin-top:18px}
+.notice{background:#fff3cd;padding:13px;border-radius:10px;margin:15px 0}
+.error{color:#b00020;font-weight:bold}
+.hidden{display:none!important}
+.status{text-align:center;background:#fff3cd;padding:25px;border-radius:15px}
+.status-icon{font-size:50px}
+.status-title{font-size:24px;font-weight:bold;margin:10px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px}
+.step{padding:13px 5px;background:#eee;border-radius:9px;text-align:center;font-size:13px}
+.step.active{background:#ffd166}
+.step.done{background:#b7e4c7}
+footer{text-align:center;padding:25px;color:#777}
+@media(max-width:600px){
+header h1{font-size:26px}
+.grid{grid-template-columns:repeat(2,1fr)}
+.card{padding:15px}
+nav button{font-size:13px;padding:10px}
+}
 </style>
 </head>
+
 <body>
 
 <header>
-  <h1>🌶️ หม่าล่าสามสหาย 🍢</h1>
-  <p>หม่าล่าแซ่บ ๆ พร้อมน้ำปั่นเย็นชื่นใจ 🥤</p>
+<h1>🌶️ หม่าล่าสามสหาย ❤️</h1>
+<p>หม่าล่าไม้ละ 10 บาท | เครื่องดื่มปั่นแก้วละ 30 บาท</p>
 </header>
 
-<main>
-  <div class="notice">
-    🛒 สั่งซื้อขั้นต่ำ 100 บาท<br>
-    🍢 หม่าล่า 10 บาท/ไม้<br>
-    🥤 น้ำปั่น 30 บาท/แก้ว<br>
-    🥣 แยกซอสฟรี
-  </div>
+<nav>
+<button class="primary" onclick="showPage('shop')">🛒 สั่งอาหาร</button>
+<button class="blue" onclick="openTracking()">📦 ติดตามออเดอร์</button>
+</nav>
 
-  <section class="card">
-    <h2>🍢 เมนูหม่าล่า</h2>
-    <div id="mala-menu"></div>
-  </section>
+<div class="container">
 
-  <section class="card">
-    <h2>🥤 เมนูน้ำปั่น</h2>
-    <div id="drink-menu"></div>
-  </section>
+<section id="shopPage">
 
-  <section class="card" id="sauce-section" hidden>
-    <h2>🌶️ เลือกซอสสำหรับหม่าล่า</h2>
-    <p>ตัวเลือกซอสใช้กับหม่าล่าทุกไม้ในออเดอร์</p>
+<div class="card">
+<h2>🍢 เมนูหม่าล่า</h2>
+<div id="malaMenu" class="grid"></div>
+</div>
 
-    <fieldset>
-      <legend>1. ประเภทซอส *</legend>
-      <label class="option"><input type="radio" name="sauce" value="ซอสหม่าล่า"> 🌶️ ซอสหม่าล่า</label>
-      <label class="option"><input type="radio" name="sauce" value="ซอสบาร์บีคิว"> 🍖 ซอสบาร์บีคิว</label>
-    </fieldset>
+<div class="card">
+<h2>🥤 เมนูเครื่องดื่ม</h2>
+<div id="drinkMenu" class="grid"></div>
+</div>
 
-    <fieldset id="spicy-section" hidden>
-      <legend>2. ระดับความเผ็ด *</legend>
-      <label class="option"><input type="radio" name="spicy" value="เผ็ดน้อย"> 🌶️ เผ็ดน้อย</label>
-      <label class="option"><input type="radio" name="spicy" value="เผ็ดกลาง"> 🌶️🌶️ เผ็ดกลาง</label>
-      <label class="option"><input type="radio" name="spicy" value="เผ็ดมาก"> 🌶️🌶️🌶️ เผ็ดมาก</label>
-    </fieldset>
+<div class="card">
+<h2>🛒 ตะกร้าสินค้า</h2>
+<div id="cartList">ยังไม่มีสินค้า</div>
+<p id="subtotalText"></p>
+<p id="deliveryText"></p>
+<div class="total" id="totalText">รวม 0 บาท</div>
+<p>ยอดสั่งซื้อขั้นต่ำ 100 บาท (ไม่รวมค่าจัดส่ง)</p>
+</div>
 
-    <fieldset>
-      <legend>3. วิธีใส่ซอส *</legend>
-      <label class="option"><input type="radio" name="method" value="ราดซอส"> 🍢 ราดซอส</label>
-      <label class="option"><input type="radio" name="method" value="แยกซอส"> 🥣 แยกซอส (ฟรี)</label>
-    </fieldset>
-  </section>
+<div class="card">
+<h2>📝 ข้อมูลการสั่งซื้อ</h2>
 
-  <section class="card">
-    <h2>🛒 ตะกร้าสินค้า</h2>
-    <div id="cart-items">ยังไม่ได้เลือกสินค้า</div>
-    <div class="total" id="total">ยอดรวม 0 บาท</div>
-    <div class="status" id="minimum">กรุณาสั่งซื้อขั้นต่ำ 100 บาท</div>
-  </section>
+<label>ชื่อผู้สั่งอาหาร</label>
+<input id="customerName" placeholder="กรอกชื่อ">
 
-  <section class="card">
-    <h2>📝 ข้อมูลลูกค้า</h2>
-    <form id="order-form">
-      <label class="field" for="name">ชื่อลูกค้า *</label>
-      <input class="text" id="name" required maxlength="100" placeholder="กรอกชื่อ">
+<label>เบอร์โทรศัพท์</label>
+<input id="phone" type="tel" maxlength="10" placeholder="08xxxxxxxx">
 
-      <label class="field" for="phone">เบอร์โทรศัพท์ *</label>
-      <input class="text" id="phone" type="tel" required maxlength="20" placeholder="08xxxxxxxx">
+<label>วิธีรับสินค้า</label>
+<select id="orderType" onchange="updateOrderType()">
+<option value="delivery">จัดส่งถึงที่</option>
+<option value="pickup">รับเองที่ร้าน</option>
+</select>
 
-      <label class="field" for="order-type">วิธีรับสินค้า *</label>
-      <select id="order-type" required>
-        <option value="">-- เลือกวิธีรับสินค้า --</option>
-        <option value="รับที่ร้าน">รับที่ร้าน</option>
-        <option value="จัดส่ง">จัดส่ง</option>
-      </select>
+<div id="addressBox">
+<label>ที่อยู่จัดส่ง</label>
+<textarea id="address" rows="3" placeholder="บ้านเลขที่ ซอย หมู่บ้าน จุดสังเกต"></textarea>
+</div>
 
-      <div id="address-box" hidden>
-        <label class="field" for="address">ที่อยู่จัดส่ง *</label>
-        <textarea id="address" maxlength="500" placeholder="กรอกที่อยู่จัดส่ง"></textarea>
-      </div>
+<label>วิธีชำระเงิน</label>
+<select id="payment">
+<option value="cash">เงินสด / เก็บเงินปลายทาง</option>
+<option value="transfer">โอนเงิน</option>
+</select>
 
-      <label class="field" for="note">หมายเหตุเพิ่มเติม</label>
-      <textarea id="note" maxlength="500" placeholder="เช่น หวานน้อย"></textarea>
+<label>เลือกซอส</label>
+<select id="sauce">
+<option>ซอสหม่าล่า</option>
+<option>ซอสบาร์บีคิว</option>
+</select>
 
-      <button class="submit" type="submit">✅ ยืนยันและสรุปคำสั่งซื้อ</button>
-      <p id="message" role="status"></p>
+<label>ระดับความเผ็ด</label>
+<select id="spicy">
+<option>เผ็ดน้อย</option>
+<option>เผ็ดกลาง</option>
+<option>เผ็ดมาก</option>
+</select>
 
-      <div id="receipt" class="receipt" hidden>
-        <h3>📋 ใบสรุปคำสั่งซื้อ</h3>
-        <p><strong>โปรดทราบ:</strong> ออเดอร์นี้ยังไม่ได้ส่งถึงร้าน กรุณาคัดลอกข้อมูลเพื่อติดต่อร้านและยืนยันการสั่งซื้อ</p>
-        <textarea id="receipt-text" readonly></textarea>
-        <button class="copy" id="copy-btn" type="button">📋 คัดลอกใบสรุปออเดอร์</button>
-      </div>
-    </form>
-  </section>
-</main>
+<label>วิธีใส่ซอส</label>
+<select id="sauceMethod">
+<option>ราดซอส</option>
+<option>แยกซอส</option>
+</select>
 
-<footer>❤️ ขอบคุณที่อุดหนุนร้านหม่าล่าสามสหาย ❤️</footer>
+<label>หมายเหตุเพิ่มเติม</label>
+<textarea id="note" rows="3" placeholder="รายละเอียดเพิ่มเติม"></textarea>
+
+<div class="notice">
+📌 ระบบจะส่งคำสั่งซื้อไปยังร้านโดยอัตโนมัติเมื่อเชื่อมต่อระบบหลังบ้านสำเร็จ
+</div>
+
+<button id="confirmBtn" class="green" style="width:100%" onclick="confirmOrder()">
+✅ ยืนยันคำสั่งซื้อ
+</button>
+
+<p id="orderError" class="error"></p>
+</div>
+
+</section>
+
+<section id="trackingPage" class="hidden">
+
+<div class="card">
+<h2>📦 ติดตามสถานะคำสั่งซื้อ</h2>
+<p>เลขออเดอร์</p>
+<h3 id="trackingOrderId">-</h3>
+<p id="trackingTotal"></p>
+
+<div class="status">
+<div id="statusIcon" class="status-icon">🟠</div>
+<div id="statusTitle" class="status-title">กำลังเตรียมอาหาร</div>
+<p id="statusDescription">ร้านกำลังจัดเตรียมอาหาร</p>
+</div>
+
+<div class="steps">
+<div id="step1" class="step">1. เตรียมอาหาร</div>
+<div id="step2" class="step">2. จัดส่ง / รอรับ</div>
+<div id="step3" class="step">3. เสร็จสิ้น</div>
+</div>
+
+<p>ระบบจะตรวจสอบสถานะอัตโนมัติทุก 10 วินาที</p>
+
+<button class="blue" style="width:100%" onclick="refreshTracking()">
+🔄 ตรวจสอบสถานะล่าสุด
+</button>
+
+<p id="trackingError" class="error"></p>
+</div>
+
+</section>
+
+</div>
+
+<footer>© หม่าล่าสามสหาย 🌶️❤️</footer>
 
 <script>
-const MINIMUM = 100;
 
-const products = [
-  {id:"pork",name:"หมู",price:10,unit:"ไม้",category:"mala"},
-  {id:"chicken",name:"ไก่",price:10,unit:"ไม้",category:"mala"},
-  {id:"dory",name:"ปลาดอลี่",price:10,unit:"ไม้",category:"mala"},
-  {id:"cheese",name:"ไส้กรอกชีส",price:10,unit:"ไม้",category:"mala"},
-  {id:"red",name:"ไส้กรอกแดงแหลมทอง",price:10,unit:"ไม้",category:"mala"},
-  {id:"tofu",name:"เต้าหู้ปลาสี่เหลี่ยม",price:10,unit:"ไม้",category:"mala"},
-  {id:"porkyor",name:"หมูยอ",price:10,unit:"ไม้",category:"mala"},
-  {id:"bologna",name:"โบโลน่า",price:10,unit:"ไม้",category:"mala"},
-  {id:"crab",name:"ปูอัด",price:10,unit:"ไม้",category:"mala"},
-  {id:"crispy",name:"ไส้กรอกหนังกรอบ",price:10,unit:"ไม้",category:"mala"},
-  {id:"squid",name:"หมึกหลอด",price:10,unit:"ไม้",category:"mala"},
+/*
+  ใส่ URL ของ API หลังบ้านที่รองรับ JSON และ CORS
 
-  {id:"kiwi",name:"กีวี่ปั่น",price:30,unit:"แก้ว",category:"drink"},
-  {id:"strawberry",name:"สตรอว์เบอร์รีปั่น",price:30,unit:"แก้ว",category:"drink"},
-  {id:"pineapple",name:"สับปะรดปั่น",price:30,unit:"แก้ว",category:"drink"},
-  {id:"orange",name:"ส้มปั่น",price:30,unit:"แก้ว",category:"drink"},
-  {id:"watermelon",name:"แตงโมปั่น",price:30,unit:"แก้ว",category:"drink"},
-  {id:"passion",name:"เสาวรสปั่น",price:30,unit:"แก้ว",category:"drink"},
-  {id:"milo",name:"ไมโลปั่น",price:30,unit:"แก้ว",category:"drink"},
-  {id:"m150",name:"M-150 ปั่น",price:30,unit:"แก้ว",category:"drink"},
-  {id:"grape",name:"เลิฟซ่ารสองุ่นเคียวโฮปั่น",price:30,unit:"แก้ว",category:"drink"},
-  {id:"honey",name:"เลิฟซ่ารสฮันนี่เลมอนปั่น",price:30,unit:"แก้ว",category:"drink"},
-  {id:"lychee",name:"เลิฟซ่ารสลิ้นจี่ปั่น",price:30,unit:"แก้ว",category:"drink"},
-  {id:"yogurt",name:"เลิฟซ่ารสโยเกิร์ตปั่น",price:30,unit:"แก้ว",category:"drink"}
+  สำคัญ:
+  URL ของ Google Apps Script /exec ที่ใช้ HtmlService
+  ไม่ใช่ JSON API สำหรับ fetch ข้ามโดเมนโดยอัตโนมัติ
+
+  หากใช้ Google Apps Script ตามโค้ดก่อนหน้า
+  ให้เปิดหน้า Index.html ผ่าน Apps Script โดยตรงแทน
+  หรือสร้าง API gateway ที่รองรับ CORS และยืนยันตัวตน
+*/
+
+const API_BASE_URL = "";
+
+const MINIMUM_ORDER = 100;
+const DELIVERY_FEE = 20;
+
+const PRODUCTS = [
+{id:"M01",name:"หมู",price:10,category:"mala"},
+{id:"M02",name:"ไก่",price:10,category:"mala"},
+{id:"M03",name:"ปลาดอลี่",price:10,category:"mala"},
+{id:"M04",name:"ไส้กรอกชีส",price:10,category:"mala"},
+{id:"M05",name:"ไส้กรอกแดงแหลมทอง",price:10,category:"mala"},
+{id:"M06",name:"เต้าหู้ปลาสี่เหลี่ยม",price:10,category:"mala"},
+{id:"M07",name:"หมูยอ",price:10,category:"mala"},
+{id:"M08",name:"โบโลน่า",price:10,category:"mala"},
+{id:"M09",name:"ปูอัด",price:10,category:"mala"},
+{id:"M10",name:"ไส้กรอกหนังกรอบ",price:10,category:"mala"},
+{id:"M11",name:"หมึกหลอด",price:10,category:"mala"},
+
+{id:"D01",name:"กีวี่ปั่น",price:30,category:"drink"},
+{id:"D02",name:"สตรอว์เบอร์รีปั่น",price:30,category:"drink"},
+{id:"D03",name:"สับปะรดปั่น",price:30,category:"drink"},
+{id:"D04",name:"ส้มปั่น",price:30,category:"drink"},
+{id:"D05",name:"แตงโมปั่น",price:30,category:"drink"},
+{id:"D06",name:"เสาวรสปั่น",price:30,category:"drink"},
+{id:"D07",name:"ไมโลปั่น",price:30,category:"drink"},
+{id:"D08",name:"M-150 ปั่น",price:30,category:"drink"},
+{id:"D09",name:"เลิฟซ่าองุ่นเคียวโฮปั่น",price:30,category:"drink"},
+{id:"D10",name:"เลิฟซ่าฮันนี่เลมอนปั่น",price:30,category:"drink"},
+{id:"D11",name:"เลิฟซ่าลิ้นจี่ปั่น",price:30,category:"drink"},
+{id:"D12",name:"เลิฟซ่าโยเกิร์ตปั่น",price:30,category:"drink"}
 ];
 
-const cart = {};
-const $ = id => document.getElementById(id);
+let cart = {};
+let currentOrder = null;
+let trackingTimer = null;
+let submitting = false;
 
-function selected(name) {
-  return document.querySelector(`input[name="${name}"]:checked`)?.value || "";
+function escapeHTML(value){
+return String(value ?? "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#39;");
 }
 
-function items() {
-  return products.filter(p => (cart[p.id] || 0) > 0);
+function renderMenu(){
+const mala = document.getElementById("malaMenu");
+const drink = document.getElementById("drinkMenu");
+
+mala.innerHTML = "";
+drink.innerHTML = "";
+
+PRODUCTS.forEach(p=>{
+const el = document.createElement("div");
+el.className = "product";
+
+el.innerHTML = `
+<div class="icon">${p.category==="mala"?"🍢":"🥤"}</div>
+<div class="product-name">${escapeHTML(p.name)}</div>
+<div class="price">${p.price} บาท</div>
+<button class="primary" onclick="addToCart('${p.id}')">+ เพิ่มสินค้า</button>
+`;
+
+(p.category==="mala"?mala:drink).appendChild(el);
+});
 }
 
-function hasMala() {
-  return items().some(p => p.category === "mala");
+function addToCart(id){
+cart[id] = (cart[id] || 0) + 1;
+renderCart();
 }
 
-function totalPrice() {
-  return items().reduce((sum,p) => sum + p.price * cart[p.id],0);
+function changeQty(id,change){
+cart[id] = (cart[id] || 0) + change;
+if(cart[id]<=0) delete cart[id];
+renderCart();
 }
 
-function invalidateReceipt() {
-  $("receipt").hidden = true;
-  $("receipt-text").value = "";
-  $("message").textContent = "";
+function getItems(){
+return PRODUCTS.filter(p=>cart[p.id]>0)
+.map(p=>({id:p.id,name:p.name,price:p.price,qty:cart[p.id]}));
 }
 
-function renderMenu() {
-  for (const p of products) {
-    const row = document.createElement("div");
-    row.className = "product";
-
-    const info = document.createElement("div");
-    info.className = "product-info";
-
-    const name = document.createElement("div");
-    name.className = "product-name";
-    name.textContent = p.name;
-
-    const price = document.createElement("div");
-    price.className = "price";
-    price.textContent = `${p.price} บาท/${p.unit}`;
-    info.append(name,price);
-
-    const qty = document.createElement("div");
-    qty.className = "qty";
-
-    const minus = document.createElement("button");
-    minus.type = "button";
-    minus.textContent = "−";
-    minus.setAttribute("aria-label",`ลด ${p.name}`);
-
-    const number = document.createElement("span");
-    number.id = `qty-${p.id}`;
-    number.textContent = "0";
-
-    const plus = document.createElement("button");
-    plus.type = "button";
-    plus.textContent = "+";
-    plus.setAttribute("aria-label",`เพิ่ม ${p.name}`);
-
-    minus.onclick = () => changeQty(p.id,-1);
-    plus.onclick = () => changeQty(p.id,1);
-
-    qty.append(minus,number,plus);
-    row.append(info,qty);
-    $(p.category === "mala" ? "mala-menu" : "drink-menu").append(row);
-  }
+function subtotal(){
+return getItems().reduce((s,p)=>s+p.price*p.qty,0);
 }
 
-function changeQty(id,amount) {
-  cart[id] = Math.max(0,Math.min(999,(cart[id] || 0)+amount));
-  $(`qty-${id}`).textContent = cart[id];
-  updateCart();
-  invalidateReceipt();
+function deliveryFee(){
+return document.getElementById("orderType").value==="delivery"
+?DELIVERY_FEE:0;
 }
 
-function updateCart() {
-  const chosen = items();
-  const box = $("cart-items");
-  box.replaceChildren();
+function renderCart(){
+const items = getItems();
+const box = document.getElementById("cartList");
 
-  if (!chosen.length) {
-    box.textContent = "ยังไม่ได้เลือกสินค้า";
-  } else {
-    chosen.forEach(p => {
-      const row = document.createElement("div");
-      row.className = "cart-row";
-      row.textContent =
-        `${p.name} × ${cart[p.id]} ${p.unit} = ${p.price*cart[p.id]} บาท`;
-      box.append(row);
-    });
-  }
-
-  $("sauce-section").hidden = !hasMala();
-  $("spicy-section").hidden = selected("sauce") !== "ซอสหม่าล่า";
-
-  const total = totalPrice();
-  $("total").textContent = `ยอดรวม ${total} บาท`;
-
-  if (total >= MINIMUM) {
-    $("minimum").className = "status ok";
-    $("minimum").textContent = "✅ ยอดครบขั้นต่ำ 100 บาทแล้ว";
-  } else {
-    $("minimum").className = "status";
-    $("minimum").textContent =
-      `⚠️ กรุณาสั่งเพิ่มอีก ${MINIMUM-total} บาท`;
-  }
+if(!items.length){
+box.innerHTML="<p>ยังไม่มีสินค้าในตะกร้า</p>";
+}else{
+box.innerHTML=items.map(p=>`
+<div class="row">
+<div><b>${escapeHTML(p.name)}</b><br>${p.price} บาท</div>
+<div class="qty">
+<button class="gray" onclick="changeQty('${p.id}',-1)">−</button>
+<b>${p.qty}</b>
+<button class="primary" onclick="changeQty('${p.id}',1)">+</button>
+</div>
+</div>
+`).join("");
 }
 
-document.querySelectorAll('input[type="radio"]').forEach(radio => {
-  radio.addEventListener("change",() => {
-    if (radio.name === "sauce" && radio.value !== "ซอสหม่าล่า") {
-      document.querySelectorAll('input[name="spicy"]').forEach(x => x.checked=false);
-    }
-    updateCart();
-    invalidateReceipt();
-  });
+document.getElementById("subtotalText").textContent=
+"ค่าอาหาร: "+subtotal()+" บาท";
+
+document.getElementById("deliveryText").textContent=
+"ค่าจัดส่ง: "+deliveryFee()+" บาท";
+
+document.getElementById("totalText").textContent=
+"รวมทั้งหมด "+(subtotal()+deliveryFee())+" บาท";
+}
+
+function updateOrderType(){
+document.getElementById("addressBox").classList.toggle(
+"hidden",
+document.getElementById("orderType").value!=="delivery"
+);
+renderCart();
+}
+
+async function apiRequest(path,options={}){
+if(!API_BASE_URL){
+throw new Error("ยังไม่ได้เชื่อมต่อระบบรับออเดอร์ของร้าน");
+}
+
+const response=await fetch(API_BASE_URL+path,{
+...options,
+headers:{
+"Content-Type":"application/json",
+...(options.headers||{})
+}
 });
 
-$("order-type").addEventListener("change",() => {
-  const delivery = $("order-type").value === "จัดส่ง";
-  $("address-box").hidden = !delivery;
-  $("address").required = delivery;
-  invalidateReceipt();
-});
-
-["name","phone","address","note"].forEach(id => {
-  $(id).addEventListener("input",invalidateReceipt);
-});
-
-function makeReceipt() {
-  const lines = [
-    "🌶️🍢 ใบสรุปออเดอร์ หม่าล่าสามสหาย",
-    "",
-    `👤 ชื่อลูกค้า: ${$("name").value.trim()}`,
-    `📞 เบอร์โทร: ${$("phone").value.trim()}`,
-    `🚚 วิธีรับสินค้า: ${$("order-type").value}`
-  ];
-
-  if ($("order-type").value === "จัดส่ง") {
-    lines.push(`📍 ที่อยู่: ${$("address").value.trim()}`);
-  }
-
-  lines.push("","🛒 รายการสินค้า");
-
-  items().forEach(p => {
-    lines.push(`${p.name} × ${cart[p.id]} ${p.unit} = ${p.price*cart[p.id]} บาท`);
-  });
-
-  if (hasMala()) {
-    lines.push(
-      "",
-      "🌶️ รายละเอียดซอส",
-      `ประเภทซอส: ${selected("sauce")}`
-    );
-    if (selected("sauce") === "ซอสหม่าล่า") {
-      lines.push(`ระดับความเผ็ด: ${selected("spicy")}`);
-    }
-    lines.push(`วิธีใส่ซอส: ${selected("method")}`);
-  }
-
-  lines.push(
-    "",
-    `💰 ยอดรวม: ${totalPrice()} บาท`,
-    `📝 หมายเหตุ: ${$("note").value.trim() || "-"}`,
-    "",
-    "สถานะ: ยังไม่ได้ส่งออเดอร์ถึงร้าน"
-  );
-
-  return lines.join("\n");
+if(!response.ok){
+throw new Error("เซิร์ฟเวอร์ไม่สามารถดำเนินการได้");
 }
 
-$("order-form").addEventListener("submit",event => {
-  event.preventDefault();
+const data=await response.json();
 
-  if (totalPrice() < MINIMUM) {
-    $("message").className = "error";
-    $("message").textContent = "❌ ยอดสั่งซื้อขั้นต่ำ 100 บาท";
-    return;
-  }
+if(data.success===false){
+throw new Error(data.message||"เกิดข้อผิดพลาด");
+}
 
-  if (hasMala()) {
-    if (!selected("sauce")) {
-      $("message").className = "error";
-      $("message").textContent = "❌ กรุณาเลือกประเภทซอส";
-      return;
-    }
+return data;
+}
 
-    if (selected("sauce") === "ซอสหม่าล่า" && !selected("spicy")) {
-      $("message").className = "error";
-      $("message").textContent = "❌ กรุณาเลือกระดับความเผ็ด";
-      return;
-    }
+async function confirmOrder(){
+if(submitting)return;
 
-    if (!selected("method")) {
-      $("message").className = "error";
-      $("message").textContent = "❌ กรุณาเลือกวิธีใส่ซอส";
-      return;
-    }
-  }
+const error=document.getElementById("orderError");
+error.textContent="";
 
-  if ($("order-type").value === "จัดส่ง" && !$("address").value.trim()) {
-    $("message").className = "error";
-    $("message").textContent = "❌ กรุณากรอกที่อยู่จัดส่ง";
-    return;
-  }
+if(subtotal()<MINIMUM_ORDER){
+error.textContent="ยอดสั่งซื้อขั้นต่ำ 100 บาท";
+return;
+}
 
-  $("receipt-text").value = makeReceipt();
-  $("receipt").hidden = false;
-  $("message").className = "";
-  $("message").textContent = "✅ สร้างใบสรุปออเดอร์เรียบร้อยแล้ว (ยังไม่ได้ส่งถึงร้าน)";
-  $("receipt").scrollIntoView({behavior:"smooth"});
+const payload={
+customerName:document.getElementById("customerName").value.trim(),
+phone:document.getElementById("phone").value.trim(),
+orderType:document.getElementById("orderType").value,
+address:document.getElementById("address").value.trim(),
+payment:document.getElementById("payment").value,
+sauce:document.getElementById("sauce").value,
+spicy:document.getElementById("spicy").value,
+sauceMethod:document.getElementById("sauceMethod").value,
+note:document.getElementById("note").value.trim(),
+items:getItems()
+};
+
+if(!payload.customerName){
+error.textContent="กรุณากรอกชื่อ";
+return;
+}
+
+if(!/^0[0-9]{8,9}$/.test(payload.phone)){
+error.textContent="กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง";
+return;
+}
+
+if(payload.orderType==="delivery"&&!payload.address){
+error.textContent="กรุณากรอกที่อยู่จัดส่ง";
+return;
+}
+
+const btn=document.getElementById("confirmBtn");
+submitting=true;
+btn.disabled=true;
+btn.textContent="⏳ กำลังส่งคำสั่งซื้อ...";
+
+try{
+const result=await apiRequest("/orders",{
+method:"POST",
+body:JSON.stringify(payload)
 });
 
-$("copy-btn").addEventListener("click",async () => {
-  const text = $("receipt-text").value;
-  try {
-    await navigator.clipboard.writeText(text);
-    $("message").textContent = "✅ คัดลอกใบสรุปออเดอร์แล้ว";
-  } catch {
-    $("receipt-text").focus();
-    $("receipt-text").select();
-    $("message").textContent = "กรุณาคัดลอกข้อความที่เลือกไว้";
-  }
+if(!result.orderId||!result.trackingKey){
+throw new Error("เซิร์ฟเวอร์ไม่ได้ยืนยันการบันทึกออเดอร์");
+}
+
+currentOrder={
+orderId:result.orderId,
+trackingKey:result.trackingKey
+};
+
+localStorage.setItem("malaLastOrder",JSON.stringify(currentOrder));
+
+cart={};
+renderCart();
+showPage("tracking");
+await refreshTracking();
+
+}catch(e){
+error.textContent=e.message;
+}finally{
+submitting=false;
+btn.disabled=false;
+btn.textContent="✅ ยืนยันคำสั่งซื้อ";
+}
+}
+
+function showPage(page){
+document.getElementById("shopPage").classList.toggle("hidden",page!=="shop");
+document.getElementById("trackingPage").classList.toggle("hidden",page!=="tracking");
+
+if(trackingTimer){
+clearInterval(trackingTimer);
+trackingTimer=null;
+}
+
+if(page==="tracking"){
+trackingTimer=setInterval(refreshTracking,10000);
+}
+
+window.scrollTo(0,0);
+}
+
+function openTracking(){
+const saved=localStorage.getItem("malaLastOrder");
+
+if(saved){
+try{currentOrder=JSON.parse(saved)}catch(e){}
+}
+
+if(!currentOrder){
+alert("ยังไม่มีออเดอร์สำหรับติดตาม");
+return;
+}
+
+showPage("tracking");
+refreshTracking();
+}
+
+async function refreshTracking(){
+if(!currentOrder)return;
+
+const error=document.getElementById("trackingError");
+error.textContent="";
+
+try{
+const query=new URLSearchParams({
+orderId:currentOrder.orderId,
+trackingKey:currentOrder.trackingKey
 });
+
+const order=await apiRequest("/orders/status?"+query.toString());
+renderTracking(order);
+
+}catch(e){
+error.textContent=e.message;
+}
+}
+
+function renderTracking(order){
+document.getElementById("trackingOrderId").textContent=order.orderId;
+document.getElementById("trackingTotal").textContent="ยอดรวม "+order.total+" บาท";
+
+const pickup=order.orderType==="pickup";
+
+const map={
+preparing:["🟠","กำลังเตรียมอาหาร","ร้านกำลังเตรียมอาหาร"],
+delivering:["🔵","กำลังจัดส่ง","อาหารกำลังเดินทาง"],
+ready_pickup:["🟢","รอรับสินค้า","อาหารเสร็จแล้ว สามารถมารับได้"],
+completed:["✅",pickup?"รับสินค้าเรียบร้อย":"จัดส่งสำเร็จ","ขอบคุณที่อุดหนุน ❤️"]
+};
+
+const status=map[order.status]||map.preparing;
+
+document.getElementById("statusIcon").textContent=status[0];
+document.getElementById("statusTitle").textContent=status[1];
+document.getElementById("statusDescription").textContent=status[2];
+
+document.getElementById("step2").textContent=
+pickup?"2. รอรับสินค้า":"2. กำลังจัดส่ง";
+
+document.getElementById("step3").textContent=
+pickup?"3. รับสินค้าเรียบร้อย":"3. จัดส่งสำเร็จ";
+
+const steps=["step1","step2","step3"].map(id=>document.getElementById(id));
+
+steps.forEach(el=>el.className="step");
+
+if(order.status==="preparing"){
+steps[0].classList.add("active");
+}else if(order.status==="delivering"||order.status==="ready_pickup"){
+steps[0].classList.add("done");
+steps[1].classList.add("active");
+}else if(order.status==="completed"){
+steps.forEach(el=>el.classList.add("done"));
+}
+}
 
 renderMenu();
-updateCart();
+updateOrderType();
+
 </script>
 </body>
 </html>
